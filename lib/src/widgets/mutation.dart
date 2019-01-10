@@ -53,6 +53,10 @@ class MutationState extends State<Mutation> {
       );
     }
 
+    if (observableQuery.controller.isClosed) {
+      initObservableQuery();
+    }
+
     observableQuery.controller.add(
       QueryResult(
         loading: true,
@@ -76,6 +80,11 @@ class MutationState extends State<Mutation> {
 
   @override
   void didChangeDependencies() {
+    initObservableQuery();
+    super.didChangeDependencies();
+  }
+
+  void initObservableQuery() {
     /// Gets the client from the closest wrapping [GraphqlProvider].
     client = GraphQLProvider.of(context).value;
     assert(client != null);
@@ -103,8 +112,6 @@ class MutationState extends State<Mutation> {
     if (shouldCreateNewObservable) {
       observableQuery = client.watchQuery(options);
     }
-
-    super.didChangeDependencies();
   }
 
   @override
