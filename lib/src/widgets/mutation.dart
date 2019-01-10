@@ -92,7 +92,8 @@ class MutationState extends State<Mutation> {
     bool shouldCreateNewObservable = true;
 
     if (observableQuery != null) {
-      if (observableQuery.options.areEqualTo(options)) {
+      if (observableQuery.options.areEqualTo(options) &&
+          !observableQuery.controller.isClosed) {
         shouldCreateNewObservable = false;
       }
 
